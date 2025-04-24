@@ -33,8 +33,8 @@ estilo_es = StylingConfig(
         "exclusivamente con la información del contexto proporcionado."
     ),
     expected_output_format="Respuesta correcta y breve en ESPAÑOL.",
-    task="Responder consultas sobre los documentos, en ESPAÑOL.",
-    scenario="Respondes a preguntas sobre documentos utilizando el ESPAÑOL.",
+    task="Responder consultas sobre los documentos en ESPAÑOL.",
+    scenario="Sistema que responde a preguntas sobre documentos en ESPAÑOL.",
 )
 
 # Create synthesizer with Ollama model
@@ -53,11 +53,23 @@ for ext in ['*.txt', '*.pdf', '*.docx']:
 
 print(f"Found {len(document_paths)} documents")
 
+'''
+MAX_CTXS_PER_DOC   = 8    # hasta 8 contextos distintos por documento
+MAX_GOLDENS_CTX    = 4    # hasta 4 preguntas por contexto
+CHUNK_SIZE         = 512  # tokens por chunk → más chunks = más contextos
+CHUNK_OVERLAP      = 50   # solape para no cortar info relevante
+
+    context_construction_config = {
+        "chunk_size": CHUNK_SIZE,
+        "chunk_overlap": CHUNK_OVERLAP,
+        "max_contexts_per_document": MAX_CTXS_PER_DOC,
+    },
+'''
 # Generate synthetic goldens from documents
 synthesizer.generate_goldens_from_docs(
     document_paths=document_paths,
     include_expected_output=True,
-    #max_goldens_per_context=3  # Generate 3 questions per document
+    max_goldens_per_context = 9,
 )
 
 # Print generated goldens
@@ -75,4 +87,3 @@ print(f"Saved synthetic dataset to {output_path}")
 # You can also convert to pandas DataFrame for further processing
 dataframe = synthesizer.to_pandas()
 print(dataframe.head())
-# 
