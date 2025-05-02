@@ -2,8 +2,12 @@ python3 -m venv venv
 cd DEEPEVAL_AL/
 source venv/bin/activate
 pip install -U deepeval
-deepeval login --confident-api-key eyzbsjFbgV/Fzp3UEcf8ECEvQF3orS8OBHnSnyEH90Y=
+
+deepeval login --confident-api-key 
 pip install requirements.txt
+
+# He modificado este fichero para que funcione en Jupyterlab:
+deepeval/synthesizer/chunking/context_generator.py
 
 
 Estoy utilizando LM studio para el LLM y Ollama para los embeddings 
